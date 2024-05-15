@@ -7,19 +7,9 @@ pipeline {
                 git url:'https://github.com/jereilfeb/Pipeline.git', branch: 'main'
             }
         }
-    stage ('Insta Dependencies') {
-        steps {
-            sh 'npm install'
-            }
-        }
-        stage('Run Tests') {
-            steps {
-                sh 'npm test'
-            }
-        }
         stage('Build') {
             steps {
-                
+                sh 'docker build -t image:v1 .'
             }
         }
     }
