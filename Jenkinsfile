@@ -10,7 +10,7 @@ pipeline {
     stage ('Build Docker Image') {
         steps {
             // Build your Docker Image
-            sh 'docker build -f DOCKERFILE .'
+            sh 'docker build . -t jereilfeb/node-app:latest'
             }
         }
         stage('Test Image') {
