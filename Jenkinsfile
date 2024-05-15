@@ -7,16 +7,19 @@ pipeline {
                 git url:'https://github.com/jereilfeb/Pipeline.git', branch: 'main'
             }
         }
-    stage ('Build Docker Image') {
+    stage ('Insta Dependencies') {
         steps {
-            // Build your Docker Image
-            sh 'docker build -t jereilfeb/node-app:latest'
+            sh 'npm install'
             }
         }
-        stage('Test Image') {
+        stage('Run Tests') {
             steps {
-                echo 'Testing...'
-                sh 'docker inspect -type=image jereilfeb/node-app:v3'
+                sh 'npm test'
+            }
+        }
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t .'
             }
         }
     }
