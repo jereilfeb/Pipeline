@@ -12,7 +12,7 @@ pipeline {
     stages {
         stage('Git Checkout') {
             steps {
-                git 'https://github.com/jereilfeb/Pipeline.git'
+                git url:'https://github.com/jereilfeb/Pipeline.git', branch: 'main'
             }
         }
         
@@ -27,7 +27,6 @@ pipeline {
                sh "trivy fs ."
             }
         }
-        
         stage(" Sonarqube Analysis "){
             steps{
                  withSonarQubeEnv('sonar') {
@@ -38,39 +37,5 @@ pipeline {
             }
         } 
         
-        stage('Docker build and tag') {
-            steps {
-               script{
-                   withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
-                    sh "make image"
-                    }
-               }
-            }
-        }
-        stage("Trivy Image Scan "){
-            steps{
-                sh "trivy image sushantkapare1717/dotnet-demoapp "
-            }
-        } 
-         
-        stage('Docker Push') {
-            steps {
-               script{
-                   withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
-                    sh "make push"
-                    }
-               }
-            }
-        }
-        
-        stage('Deloy to container ') {
-            steps {
-               script{
-                   withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
-                    sh "docker run -d -p 5000:5000  sushantkapare1717/dotnet-demoapp "
-                    }
-               }
-            }
-        }
     }
 }
